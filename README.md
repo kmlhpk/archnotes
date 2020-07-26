@@ -49,7 +49,7 @@ Coming Soon™
 
 ### Installing the system
 
-`pacman Sy reflector` in the USB system, and then run `reflector --latest 15 --protocol https --sort rate --save /etc/pacman.d/mirrorlist` to... do the thing
+`pacman -Sy reflector` in the USB system, and then run `reflector --latest 15 --protocol https --sort rate --save /etc/pacman.d/mirrorlist` to... do the thing
 
 Install Arch and some basic text and networking utilities with `pacstrap /mnt base linux linux-firmware nano netctl networkmanager` 
 
