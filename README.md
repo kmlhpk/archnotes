@@ -80,7 +80,7 @@ Set root password with `passwd`
 
 Install `efibootmgr`
 
-Run `efibootmgr --disk /dev/[disk name] --part [boot partition's number] --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=UUID=[bootpartition UUID] silent initrd=\initramfs-linux.img' --verbose`
+Run `efibootmgr --disk /dev/[disk name] --part [boot partition number] --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=UUID=[boot partition UUID] silent initrd=\initramfs-linux.img' --verbose`
 
 OPTIONAL: Install refind, and then edit `/boot/refind_linux.conf` to say something like `"boot with standard options" "root=UUID=XXX...."`
 
@@ -99,6 +99,10 @@ useradd -m -G wheel [username]
 passwd [username]
 visudo /etc/sudoers to reflect changes
 ```
+
+### Get rid of weird caching message
+
+https://unix.stackexchange.com/questions/257270/get-rid-of-no-caching-mode-page-found-message-during-boot
 
 ## //TODO
 
