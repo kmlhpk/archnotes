@@ -1,11 +1,11 @@
-# kmlhpk's ***Musings on Arch***
+# **Musings on Arch**
 ## General Thoughts
 
 I first installed Arch on a Lenovo ThinkPad X280 on the 2020-05-23.
 
 Following the Arch Wiki and asking Alex for help where I couldn't figure something out myself was much better for a complete beginner like myself than my brief attempt at trying to install Manjaro via Architect. The Manjaro wiki is simply not good enough. Sure, Arch installation and basic config took the best part of like, 10 hours. But it was damn fun, and educational too. Though, knowing what I know now, using Architect would probably be a doddle.
 
-After an extended hiatus (mostly due to laziness), I decided to reinstall Arch from scratch on said laptop on 2020-07-26. This was to re-familiarise myself with the process, to document it all properly as I went along, and to prepare myself for installing Arch on the new SSD I bought for my PC.
+After an extended hiatus (mostly due to laziness), I decided to reinstall Arch from scratch on said laptop on 2020-07-26. This was to re-familiarise myself with the process, to document it all properly as I went along, and to prepare myself for installing Arch on the new SSD I bought for my PC. This day was spent mostly trying to figure out how on God's green Earth to configure booting with EFISTUB rather than through a bootloader, during which I learned some cool things about UEFI systems and where to mount the EFI System Partition. I now feel like I could install an Arch system comfortably and quickly, with only this document as my aid - though I still need to document partitioning (as I do it for my new SSD) and figure out how to dual-boot Windows and Arch on my PC.
 
 ## Install Process
 
@@ -93,6 +93,15 @@ OPTIONAL: Install refind, and then edit `/boot/refind_linux.conf` to say somethi
 - https://wiki.archlinux.org/index.php/Laptop/Lenovo
 - https://fhackts.wordpress.com/2018/12/28/arch-linux-on-a-lenovo-x280/
 
+### Create non-root user 
+```
+useradd -m -G wheel [username] 
+passwd [username]
+visudo /etc/sudoers to reflect changes
+```
+
+## //TODO
+
 ### ❌ kernel parameters? microcode???
 
 - https://wiki.archlinux.org/index.php/Microcode
@@ -112,12 +121,6 @@ using `systemd-analyze`, I found refind took at least 8 seconds to boot. Direct 
 ### ❌ make a script to make changing EFISTUB boot using `efibootmgr` less painful
 
 ### ❌ make refind boot menu pretty (PC)
-
-### ✅ create non-root user 
-
-- `useradd -m -G wheel [username]` 
-- `passwd [username]`
-- `visudo /etc/sudoers` to reflect changes
 
 ### ✅ `alsa`, `alsa-utils`, `alsa-packages` for sound management
 
@@ -206,7 +209,13 @@ using `systemd-analyze`, I found refind took at least 8 seconds to boot. Direct 
 
 - https://www.brow.sh/
 
-## Making i3 Look Nice
+## Confugring a terminal emulator
+
+`st` appears to be the best of them, but it looks very difficult to customise. I can't seem to decide on a second-best option.
+
+## Configuring a wm
+
+Tempted to try `dwm` or `xmonad`, might stick with `i3wm` for the time being though.
 
 ## Configuring the Status Bar
 
