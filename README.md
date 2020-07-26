@@ -97,8 +97,10 @@ OPTIONAL: Install refind, and then edit `/boot/refind_linux.conf` to say somethi
 ```
 useradd -m -G wheel [username] 
 passwd [username]
-visudo /etc/sudoers to reflect changes
+visudo /etc/sudoers
 ```
+
+Once in `/etc/sudoers`, uncomment the line allowing wheel users to run any command and save (press insert, do stuff, press escape, `:wq`, press enter)
 
 ### Get rid of weird caching message
 
