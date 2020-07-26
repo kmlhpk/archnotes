@@ -106,6 +106,8 @@ https://unix.stackexchange.com/questions/257270/get-rid-of-no-caching-mode-page-
 
 ## //TODO
 
+### ❌ make `NetworkManager` start up automagically
+
 ### ❌ kernel parameters? microcode???
 
 - https://wiki.archlinux.org/index.php/Microcode
