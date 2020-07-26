@@ -1,13 +1,56 @@
 # kmlhpk's ***Musings on Arch***
 ## General Thoughts
 
-I first installed Arch on a Lenovo ThinkPad X280 on the 23rd of May 2020.
+I first installed Arch on a Lenovo ThinkPad X280 on the 2020-05-23.
 
 Following the Arch Wiki and asking Alex for help where I couldn't figure something out myself was much better for a complete beginner like myself than my brief attempt at trying to install Manjaro via Architect. The Manjaro wiki is simply not good enough. Sure, Arch installation and basic config took the best part of like, 10 hours. But it was damn fun, and educational too. Though, knowing what I know now, using Architect would probably be a doddle.
 
+After an extended hiatus (mostly due to laziness), I decided to reinstall Arch from scratch on said laptop on 2020-07-26. This was to re-familiarise myself with the process, to document it all properly as I went along, and to prepare myself for installing Arch on the new SSD I bought for my PC.
+
 ## Install Process
 
-- [Installation Guide](https://wiki.archlinux.org/index.php/installation_guide)
+Following the [Installation Guide](https://wiki.archlinux.org/index.php/installation_guide)
+
+`ip link`, `iwctl`, `wifi-menu` to get connected to the internet
+
+### Partitions, Filesystems, Mounting
+
+`parted` to start the partitioning process
+
+#### Partitioning a disk
+
+Coming Soon™
+
+#### Creating filesystems
+
+`lsblk -f` to list filesystems
+
+`findmnt` to find mounted filesystems
+
+`umount -R` to recursively unmount a target and all its kids
+
+`mkfs.fat -F32 [target]` for UEFI part, `mkfs.ext4 [target]` for other parts
+
+#### Mounting filesystems
+
+Mount root (`/`) partition (eg `nvme0n1p2` on laptop) to `/mnt` using `mount /dev/nvme0n1p2 /mnt`
+
+Create `/mnt/efi` and `/mnt/home` directories (`mkdir`), and mount the EFI and home partitions to them, respectively
+
+### Installing the system
+
+`pacman Sy reflector` in the USB system, and then run `reflector --latest 15 --protocol https --sort rate --save /etc/pacman.d/mirrorlist` to... do the thing
+
+Install Arch and some basic text and networking utilities with `pacstrap /mnt base linux linux-firmware nano netctl networkmanager` 
+
+Run `genfstab -U /mnt >> /mnt/etc/fstab`, check the resulting file
+
+Run `ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime`, `timedatectl set-timezone Europe/London` and `hwclock --systohc`
+
+`KEYMAP=uk` into `/etc/vconsole.conf` (can also `loadkeys uk` if needed on live medium)
+
+Install refind, and then edit `/boot/refind_linux.conf` to say something like `"boot with standard options" "root=UUID=XXX...."`
+
 
 ## Post-Install Config
 
