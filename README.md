@@ -51,7 +51,7 @@ Coming Soon™
 
 `pacman -Sy reflector` in the USB system, and then run `reflector --latest 15 --protocol https --sort rate --save /etc/pacman.d/mirrorlist` to... do the thing
 
-Install Arch and some basic text and networking utilities with `pacstrap /mnt base linux linux-firmware nano netctl networkmanager` 
+Install Arch and some basic text and networking utilities with `pacstrap /mnt base linux linux-firmware nano netctl networkmanager sudo` 
 
 Run `genfstab -U /mnt >> /mnt/etc/fstab`, check the resulting file
 
