@@ -9,9 +9,13 @@ After an extended hiatus (mostly due to laziness), I decided to reinstall Arch f
 
 ## Install Process
 
-Following the [Installation Guide](https://wiki.archlinux.org/index.php/installation_guide)
+Following the [Installation Guide](https://wiki.archlinux.org/index.php/installation_guide).
 
-`ip link`, `iwctl`, `wifi-menu` to get connected to the internet
+`ip link`, `wifi-menu`, `iwctl` to get connected to the internet
+
+`loadkeys uk`
+
+`timedatectl set-ntp true`, `... status`
 
 ### Partitions, Filesystems, Mounting
 
@@ -33,9 +37,15 @@ Coming Soon™
 
 #### Mounting filesystems
 
-Mount root (`/`) partition (eg `nvme0n1p2` on laptop) to `/mnt` using `mount /dev/nvme0n1p2 /mnt`
+##### Laptop
 
-Create `/mnt/efi` and `/mnt/home` directories (`mkdir`), and mount the EFI and home partitions to them, respectively
+Mount root (`/`) partition `nvme0n1p2` to `/mnt` using `mount /dev/nvme0n1p2 /mnt`
+
+Create `/mnt/boot` and `/mnt/home` directories (`mkdir`), and mount the EFI and home partitions to them, respectively
+
+##### PC
+
+Coming Soon™
 
 ### Installing the system
 
@@ -45,12 +55,36 @@ Install Arch and some basic text and networking utilities with `pacstrap /mnt ba
 
 Run `genfstab -U /mnt >> /mnt/etc/fstab`, check the resulting file
 
+### Enter the new system
+
+`arch-chroot /mnt`
+
 Run `ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime`, `timedatectl set-timezone Europe/London` and `hwclock --systohc`
 
-`KEYMAP=uk` into `/etc/vconsole.conf` (can also `loadkeys uk` if needed on live medium)
+Uncomment relevant locales in `/etc/locale.gen` and run `locale-gen`
 
-Install refind, and then edit `/boot/refind_linux.conf` to say something like `"boot with standard options" "root=UUID=XXX...."`
+`echo "LANG=un_GB.UTF8" >> /etc/locale.conf`
 
+`echo "KEYMAP=uk" >> /etc/vconsole.conf`
+
+`echo "[hostname]" >> /etc/hostnames`
+
+Edit the `/etc/hosts` file to say:
+
+```
+127.0.0.1	localhost
+::1		localhost
+127.0.1.1	myhostname.localdomain	myhostname
+```
+Set root password with `passwd`
+
+Install `efibootmgr`
+
+Run `efibootmgr --disk /dev/[disk name] --part [boot partition's number] --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=UUID=[bootpartition UUID] silent initrd=\initramfs-linux.img' --verbose`
+
+OPTIONAL: Install refind, and then edit `/boot/refind_linux.conf` to say something like `"boot with standard options" "root=UUID=XXX...."`
+
+`exit`, `umount-R /mnt`, `reboot` into the new system!
 
 ## Post-Install Config
 
@@ -59,18 +93,25 @@ Install refind, and then edit `/boot/refind_linux.conf` to say something like `"
 - https://wiki.archlinux.org/index.php/Laptop/Lenovo
 - https://fhackts.wordpress.com/2018/12/28/arch-linux-on-a-lenovo-x280/
 
+### ❌ kernel parameters? microcode???
+
+- https://wiki.archlinux.org/index.php/Microcode
+
 ### ❌ edit refind config file with UUID kernel params
 
 - https://wiki.archlinux.org/index.php/REFInd#Installation_with_refind-install_script
 - https://wiki.archlinux.org/index.php/Kernel_parameters#rEFInd
-- https://wiki.archlinux.org/index.php/Microcode
 - https://old.reddit.com/r/archlinux/comments/a5ppnb/what_should_my_refind_linuxconf_look_like_how_do/
 
 ### ✅ get AUR helper `yay`
 
-### ❌ ensure arch boots properly and fast
+### 🔁 ensure arch boots properly and fast
 
-### ❌ make refind boot menu pretty
+using `systemd-analyze`, I found refind took at least 8 seconds to boot. Direct EFISTUB booting takes about 20ms. Not sure if I can make refind any faster, or if I can decrease the firmware, kernel or userspace t
+
+### ❌ make a script to make changing EFISTUB boot using `efibootmgr` less painful
+
+### ❌ make refind boot menu pretty (PC)
 
 ### ✅ create non-root user 
 
