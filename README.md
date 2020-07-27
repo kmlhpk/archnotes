@@ -70,9 +70,9 @@ Uncomment relevant locales in `/etc/locale.gen` and run `locale-gen`
 Edit the `/etc/hosts` file to say:
 
 ```
-127.0.0.1	localhost
-::1		localhost
-127.0.1.1	myhostname.localdomain	myhostname
+127.0.0.1 localhost
+::1   localhost
+127.0.1.1 [hostname].localdomain  [hostname]
 ```
 Set root password with `passwd`
 
@@ -107,6 +107,14 @@ https://unix.stackexchange.com/questions/257270/get-rid-of-no-caching-mode-page-
 ### Networking
 
 `systemctl enable NetworkManager`, `nmtui`
+
+### Graphical environment
+
+Ctrl+Alt+F2(3,4...) starts new tty
+
+Alt+Left,Right to move ttys
+
+
 
 ## //TODO
 
@@ -171,12 +179,7 @@ using `systemd-analyze`, I found refind took at least 8 seconds to boot. Direct 
 
 ### ❌ change terminal emulator from `rxvt-unicode` to something better
 
-- https://www.google.com/search?hl=en&q=linux%20best%20terminal%20emulators
-
 ### ❌ customise terminal emulator
-
-- https://addy-dclxvi.github.io/post/configuring-urxvt/
-- https://wiki.archlinux.org/index.php/Rxvt-unicode#Configuration
 
 ### ❌ decide between `bash` and `zsh`
 
@@ -188,7 +191,7 @@ using `systemd-analyze`, I found refind took at least 8 seconds to boot. Direct 
 
 ### ❌ trackpoint control drivers
 
-### 🔁 make Fn keys work
+### 🔁 make sure Fn keys work
 
 (2020-05-25) Audio Fn keys work out of the box - great stuff. I still need to make sure their volume is capped at 100 and edit the volume increment.
 
