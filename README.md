@@ -1,11 +1,9 @@
 # **Musings on Arch**
 ## General Thoughts
 
-I first installed Arch on a Lenovo ThinkPad X280 on the 2020-05-23.
+I first installed Arch on a Lenovo ThinkPad X280 on 2020-05-23. Following the Arch Wiki and asking Alex for help where I couldn't figure something out myself was much better for a complete beginner like myself than my brief attempt at trying to install Manjaro via Architect. The Manjaro wiki is simply not good enough. Sure, Arch installation and basic config took the best part of like, 10 hours. But it was fun and educational. Though, knowing what I know now, using Architect would probably be a doddle.
 
-Following the Arch Wiki and asking Alex for help where I couldn't figure something out myself was much better for a complete beginner like myself than my brief attempt at trying to install Manjaro via Architect. The Manjaro wiki is simply not good enough. Sure, Arch installation and basic config took the best part of like, 10 hours. But it was damn fun, and educational too. Though, knowing what I know now, using Architect would probably be a doddle.
-
-After an extended hiatus (mostly due to laziness), I decided to reinstall Arch from scratch on said laptop on 2020-07-26. This was to re-familiarise myself with the process, to document it all properly as I went along, and to prepare myself for installing Arch on the new SSD I bought for my PC. This day was spent mostly trying to figure out how on God's green Earth to configure booting with EFISTUB rather than through a bootloader, during which I learned some cool things about UEFI systems and where to mount the EFI System Partition. I now feel like I could install an Arch system comfortably and quickly, with only this document as my aid - though I still need to document partitioning (as I do it for my new SSD) and figure out how to dual-boot Windows and Arch on my PC.
+After an extended hiatus (mostly due to laziness), I decided to reinstall Arch from scratch on said laptop on 2020-07-26. This was to re-familiarise myself with the process, to document it all properly as I went along, and to prepare myself for installing Arch on the new SSD I bought for my PC. This day was spent mostly trying to figure out how on God's green Earth to configure booting with EFISTUB rather than through a bootloader, during which I learned some cool things about UEFI systems. I now feel like I could install an Arch system comfortably and quickly, with only this cheat sheet as my aid - though I still need to document partitioning (as I do it for my new SSD) and figure out how to dual-boot Windows and Arch on my PC.
 
 ## Install Process
 
@@ -15,17 +13,17 @@ Following the [Installation Guide](https://wiki.archlinux.org/index.php/installa
 
 `loadkeys uk`
 
-`timedatectl set-ntp true`, `... status`
+`timedatectl set-ntp true`, `timedatectl status`
 
 ### Partitions, Filesystems, Mounting
 
 `parted` to start the partitioning process
 
-#### Partitioning a disk
+#### Partition the disk
 
 Coming Soon™
 
-#### Creating filesystems
+#### Create filesystems
 
 `lsblk -f` to list filesystems
 
@@ -35,7 +33,7 @@ Coming Soon™
 
 `mkfs.fat -F32 [target]` for UEFI part, `mkfs.ext4 [target]` for other parts
 
-#### Mounting filesystems
+#### Mount filesystems
 
 ##### Laptop
 
@@ -47,7 +45,7 @@ Create `/mnt/boot` and `/mnt/home` directories (`mkdir`), and mount the EFI and 
 
 Coming Soon™
 
-### Installing the system
+### Install the system
 
 `pacman -Sy reflector` in the USB system, and then run `reflector --latest 15 --protocol https --sort rate --save /etc/pacman.d/mirrorlist` to... do the thing
 
@@ -106,9 +104,11 @@ Once in `/etc/sudoers`, uncomment the line allowing wheel users to run any comma
 
 https://unix.stackexchange.com/questions/257270/get-rid-of-no-caching-mode-page-found-message-during-boot
 
-## //TODO
+### Networking
 
-### ❌ make `NetworkManager` start up automagically
+`systemctl enable NetworkManager`, `nmtui`
+
+## //TODO
 
 ### ❌ kernel parameters? microcode???
 
@@ -217,15 +217,15 @@ using `systemd-analyze`, I found refind took at least 8 seconds to boot. Direct 
 
 - https://www.brow.sh/
 
-## Confugring a terminal emulator
+## Configure a terminal emulator
 
 `st` appears to be the best of them, but it looks very difficult to customise. I can't seem to decide on a second-best option.
 
-## Configuring a wm
+## Configure a wm
 
 Tempted to try `dwm` or `xmonad`, might stick with `i3wm` for the time being though.
 
-## Configuring the Status Bar
+## Configure the Status Bar
 
 ### ❌ make it look nice
 
