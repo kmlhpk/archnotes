@@ -70,9 +70,9 @@ Uncomment relevant locales in `/etc/locale.gen` and run `locale-gen`
 Edit the `/etc/hosts` file to say:
 
 ```
-127.0.0.1 localhost
-::1   localhost
-127.0.1.1 [hostname].localdomain  [hostname]
+127.0.0.1		localhost
+::1					localhost
+127.0.1.1 	[hostname].localdomain  [hostname]
 ```
 Set root password with `passwd`
 
