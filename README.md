@@ -49,7 +49,7 @@ Coming Soon™
 
 `pacman -Sy reflector` in the USB system, and then run `reflector --latest 15 --protocol https --sort rate --save /etc/pacman.d/mirrorlist` to... do the thing
 
-Install Arch and some basic text and networking utilities with `pacstrap /mnt base linux linux-firmware nano netctl networkmanager sudo` 
+Install Arch and some basic text and networking utilities with `pacstrap /mnt base linux linux-firmware base-devel nano netctl networkmanager`
 
 Run `genfstab -U /mnt >> /mnt/etc/fstab`, check the resulting file
 
@@ -114,7 +114,9 @@ Ctrl+Alt+F2(3,4...) starts new tty
 
 Alt+Left,Right to move ttys
 
+download the `xorg` package group, `mesa` and the relevant video drivers.
 
+clone dwm + st from git repos, run `make` and `sudo make install`. install `dmenu`.
 
 ## //TODO
 
@@ -161,8 +163,6 @@ using `systemd-analyze`, I found refind took at least 8 seconds to boot. Direct 
 ### ❌ automate bluetooth connection
 
 - https://wiki.archlinux.org/index.php/Bluetooth_headset#Configuration_via_CLI
-
-### ✅ download relevant `xorg` packages
 
 ### ✅ make sure `mesa` and relevant Intel drivers are present
 
@@ -224,9 +224,7 @@ using `systemd-analyze`, I found refind took at least 8 seconds to boot. Direct 
 
 `st` appears to be the best of them, but it looks very difficult to customise. I can't seem to decide on a second-best option.
 
-## Configure a wm
-
-Tempted to try `dwm` or `xmonad`, might stick with `i3wm` for the time being though.
+## Configure `dwm`
 
 ## Configure the Status Bar
 
