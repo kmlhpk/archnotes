@@ -118,6 +118,8 @@ download the `xorg` package group, `mesa` and the relevant video drivers.
 
 clone dwm + st from git repos, run `make` and `sudo make install`. install `dmenu`.
 
+`echo "exec dwm" >> ~/.xinitrc`
+
 ## //TODO
 
 ### ❌ kernel parameters? microcode???
