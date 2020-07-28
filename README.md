@@ -114,11 +114,17 @@ Ctrl+Alt+F2(3,4...) starts new tty
 
 Alt+Left,Right to move ttys
 
-download the `xorg` package group, `mesa` and the relevant video drivers.
+Download the `xorg` package group, `mesa` and the relevant video drivers
 
-clone dwm + st from git repos, run `make` and `sudo make install`. install `dmenu`.
+Clone `dwm` + `st` from git repos, run `make` and `sudo make install`. install `dmenu`.
 
 `echo "exec dwm" >> ~/.xinitrc`
+
+Install a font, eg Hack
+
+To find a font name: `fc-list | grep -i "keyword`
+
+Then whack it into `~/st/config.h`
 
 ## //TODO
 
@@ -210,7 +216,9 @@ using `systemd-analyze`, I found refind took at least 8 seconds to boot. Direct 
 
 ### ❌ check if network manager automatically switches over to ethernet when plugged in, and back to wifi when not
 
-### ❌ fuck around with fonts
+### 🔁 fuck around with fonts
+
+Hack is ok for now, but I want something with a line through the 0, not a dot inside it. Also no ligatures, they're ugly.
 
 ### ❌ display manager for logging in, not having to `startx` through tty (or just put a script in `~/.profile`)
 
