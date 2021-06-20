@@ -27,6 +27,8 @@ want a boot/EFI of about 512MiB and the rest can be root (set up swpafile later)
 
 don't really need to separate root and home, unless you're very scared of things fucking up
 
+make sure to change the type of the EFI partition from Linux filesystem to EFI something something
+
 #### Create filesystems
 
 `lsblk -f` to list filesystems
@@ -65,11 +67,11 @@ Run `ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime`, `timedatectl set-
 
 Uncomment relevant locales in `/etc/locale.gen` and run `locale-gen`
 
-`echo "LANG=un_GB.UTF8" >> /etc/locale.conf`
+`echo "LANG=en_GB.UTF8" >> /etc/locale.conf`
 
 `echo "KEYMAP=uk" >> /etc/vconsole.conf`
 
-`echo "[hostname]" >> /etc/hostnames`
+`echo "[hostname]" >> /etc/hostname`
 
 Edit the `/etc/hosts` file to say:
 
