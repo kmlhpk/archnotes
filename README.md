@@ -17,11 +17,15 @@ Following the [Installation Guide](https://wiki.archlinux.org/index.php/installa
 
 ### Partitions, Filesystems, Mounting
 
-`parted` to start the partitioning process
-
 #### Partition the disk
 
-Coming Soon™
+`fdisk /dev/sdX` to select a disk
+
+`n` to create a new partition, `p` to print, `d` to delete
+
+want a boot/EFI of about 512MiB and the rest can be root (set up swpafile later)
+
+don't really need to separate root and home, unless you're very scared of things fucking up
 
 #### Create filesystems
 
