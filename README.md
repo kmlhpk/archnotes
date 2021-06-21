@@ -77,10 +77,21 @@ Run `efibootmgr --disk /dev/[disk name] --part [boot partition number] --create 
 
 #### Dual-boot (eg PC)
 
-`bootctl install`, which should create `loader` in `/mnt/boot`
+`bootctl install`
 
+`echo "options root=PARTUUID=$(blkid -s PARTUUID -o value /dev/sdXY) rw" >> /boot/loader/entries/arch.conf` where `sdXY` is the root part (prob `sda2`)
 
-`exit`, `umount-R /mnt`, `reboot` into the new system!
+Follow the instructions at [Loader Configuration](https://wiki.archlinux.org/title/Systemd-boot#Loader_configuration) and [this site](https://www.addictivetips.com/ubuntu-linux-tips/set-up-systemd-boot-on-arch-linux/) to set up loader entries
+
+`bootctl update` to save everything
+
+### Microcode
+
+Coming Soon™
+
+### Done
+
+`exit` the chroot, `umount-R /mnt` just to be safe, `reboot` into the new system!
 
 ## Post-Install Config
 
