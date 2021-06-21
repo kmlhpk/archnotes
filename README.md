@@ -1,61 +1,46 @@
-# **Musings on Arch**
-## General Thoughts
-
-I first installed Arch on a Lenovo ThinkPad X280 on 2020-05-23. Following the Arch Wiki and asking Alex for help where I couldn't figure something out myself was much better for a complete beginner like myself than my brief attempt at trying to install Manjaro via Architect. The Manjaro wiki is simply not good enough. Sure, Arch installation and basic config took the best part of like, 10 hours. But it was fun and educational. Though, knowing what I know now, using Architect would probably be a doddle.
-
-After an extended hiatus (mostly due to laziness), I decided to reinstall Arch from scratch on said laptop on 2020-07-26. This was to re-familiarise myself with the process, to document it all properly as I went along, and to prepare myself for installing Arch on the new SSD I bought for my PC. This day was spent mostly trying to figure out how on God's green Earth to configure booting with EFISTUB rather than through a bootloader, during which I learned some cool things about UEFI systems. I now feel like I could install an Arch system comfortably and quickly, with only this cheat sheet as my aid - though I still need to document partitioning (as I do it for my new SSD) and figure out how to dual-boot Windows and Arch on my PC.
+# **Arch Linux Notes to Self**
 
 ## Install Process
 
 Following the [Installation Guide](https://wiki.archlinux.org/index.php/installation_guide).
 
-`ip link`, `wifi-menu`, `iwctl` to get connected to the internet
+`ip link`, `wifi-menu`, `iwctl` to get connected to the internet (if no ethernet)
 
 `loadkeys uk`
 
-`timedatectl set-ntp true`, `timedatectl status`
+`timedatectl set-ntp true`, `timedatectl status` (this seems to fuck up Windows clock, remember to reset it)
 
 ### Partitions, Filesystems, Mounting
 
-#### Partition the disk
+`lsblk` to sanity check, `-f` option to see filesystems
 
 `fdisk /dev/sdX` to select a disk
 
-`n` to create a new partition, `p` to print, `d` to delete
+`n` to create a new partition, `p` to print, `d` to delete, `w` to write, `t` to change type
 
-want a boot/EFI of about 512MiB and the rest can be root (set up swpafile later)
+want a `boot` of about 512MiB and the rest can be `root` (set up swpafile later)
 
-don't really need to separate root and home, unless you're very scared of things fucking up
+don't really need to separate `root` and `home`, unless you're very scared of things fucking up
 
-make sure to change the type of the EFI partition from Linux filesystem to EFI something something
+make sure to change the type of the EFI partition from Linux filesystem to EFI (option `1`)
 
-#### Create filesystems
+`mkfs.fat -F32 /dev/sdXY` for UEFI part, `mkfs.ext4 /dev/sdXZ` for other part(s)
 
-`lsblk -f` to list filesystems
+Mount root partition using `mount /dev/sdXY /mnt` (probably `sda2`, or on laptop `nvme0n1p2`)
 
-`findmnt` to find mounted filesystems
+Create `/mnt/boot` (and optionally `/mnt/home`) directory (`mkdir /mnt/...`), and mount the EFI (and home) partition, respectively
+
+Make sure the boot partition/mountpoint/dir is called `boot` not `efi`, since `pacstrap` will chuck your shit in `boot` regardless and it'll just cause you problems with `systemd-boot` down the line
+
+`findmnt` to find mounted filesystems, check you've done it correctly
 
 `umount -R` to recursively unmount a target and all its kids
-
-`mkfs.fat -F32 [target]` for UEFI part, `mkfs.ext4 [target]` for other parts
-
-#### Mount filesystems
-
-##### Laptop
-
-Mount root (`/`) partition `nvme0n1p2` to `/mnt` using `mount /dev/nvme0n1p2 /mnt`
-
-Create `/mnt/boot` and `/mnt/home` directories (`mkdir`), and mount the EFI and home partitions to them, respectively
-
-##### PC
-
-Coming Soon™
 
 ### Install the system
 
 `pacman -Sy reflector` in the USB system, and then run `reflector --latest 15 --protocol https --sort rate --save /etc/pacman.d/mirrorlist` to... do the thing
 
-Install Arch and some basic text and networking utilities with `pacstrap /mnt base linux linux-firmware base-devel nano netctl networkmanager`
+Install Arch and some basic text and networking utilities with `pacstrap /mnt base linux linux-firmware base-devel nano vi netctl networkmanager`
 
 Run `genfstab -U /mnt >> /mnt/etc/fstab`, check the resulting file
 
@@ -82,11 +67,18 @@ Edit the `/etc/hosts` file to say:
 ```
 Set root password with `passwd`
 
+### Bootloader
+
+#### Single-boot (eg laptop)
+
 Install `efibootmgr`
 
 Run `efibootmgr --disk /dev/[disk name] --part [boot partition number] --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=UUID=[boot partition UUID] silent initrd=\initramfs-linux.img' --verbose`
 
-OPTIONAL: Install refind, and then edit `/boot/refind_linux.conf` to say something like `"boot with standard options" "root=UUID=XXX...."`
+#### Dual-boot (eg PC)
+
+`bootctl install`, which should create `loader` in `/mnt/boot`
+
 
 `exit`, `umount-R /mnt`, `reboot` into the new system!
 
