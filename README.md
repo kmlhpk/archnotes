@@ -101,6 +101,7 @@ Coming Soon™
 - https://fhackts.wordpress.com/2018/12/28/arch-linux-on-a-lenovo-x280/
 
 ### Create non-root user 
+
 ```
 useradd -m -G wheel [username] 
 passwd [username]
