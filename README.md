@@ -83,7 +83,9 @@ Run `efibootmgr --disk /dev/[disk name] --part [boot partition number] --create 
 
 Follow the instructions at [Loader Configuration](https://wiki.archlinux.org/title/Systemd-boot#Loader_configuration) and [this site](https://www.addictivetips.com/ubuntu-linux-tips/set-up-systemd-boot-on-arch-linux/) to set up loader entries
 
-Make some sort of temp folder (eg /windows_tmp) and mount the windows boot partition (probably /dev/sd_1) to it. Copy over the Microsoft folder in the EFI to /boot/EFI, following the instructions [here](https://old.reddit.com/r/archlinux/comments/afki9z/dualboot_arch_and_windows_on_separate_drives_with/). Systemd-boot cannot detect efi boot managers from different drives, have to either mount both to the same partition or copy stuff over after the fact. 
+Make some sort of temp folder (eg `/windows_tmp`) and mount the windows boot partition (probably `/dev/sd_1`) to it. Copy over the Microsoft folder in the EFI to `/boot/EFI`, following the instructions [here](https://old.reddit.com/r/archlinux/comments/afki9z/dualboot_arch_and_windows_on_separate_drives_with/). Systemd-boot cannot detect efi boot managers from different drives, have to either mount both to the same partition or copy stuff over after the fact. 
+
+You can then make a windows.conf with the lines `title Windows 10` and `efi /EFI/Microsoft/Boot/bootmgfw.efi`.
 
 `bootctl update` to save everything
 
