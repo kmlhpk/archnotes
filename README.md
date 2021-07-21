@@ -93,7 +93,7 @@ You can then make a windows.conf with the lines `title Windows 10` and `efi /EFI
 
 ### Microcode
 
-Coming Soon™
+Install `amd-ucode` and add to `/boot/loader/entries/arch.conf` the line `initrd /amd-ucode.img` as the first initrd line (ie. before initramfs).
 
 ### Done
 
@@ -114,7 +114,7 @@ passwd [username]
 visudo /etc/sudoers
 ```
 
-Once in `/etc/sudoers`, uncomment the line allowing wheel users to run any command and save (press insert, do stuff, press escape, `:wq`, press enter)
+Once in `/etc/sudoers`, uncomment the line allowing wheel users to run any command and save (press i, do stuff, press escape, `:wq`, press enter)
 
 ### Get rid of weird caching message
 
@@ -144,16 +144,6 @@ Then whack it into `~/st/config.h`
 
 ## //TODO
 
-### ❌ kernel parameters? microcode???
-
-- https://wiki.archlinux.org/index.php/Microcode
-
-### ❌ edit refind config file with UUID kernel params
-
-- https://wiki.archlinux.org/index.php/REFInd#Installation_with_refind-install_script
-- https://wiki.archlinux.org/index.php/Kernel_parameters#rEFInd
-- https://old.reddit.com/r/archlinux/comments/a5ppnb/what_should_my_refind_linuxconf_look_like_how_do/
-
 ### ✅ get AUR helper `yay`
 
 ### 🔁 ensure arch boots properly and fast
@@ -161,8 +151,6 @@ Then whack it into `~/st/config.h`
 using `systemd-analyze`, I found refind took at least 8 seconds to boot. Direct EFISTUB booting takes about 20ms. Not sure if I can make refind any faster, or if I can decrease the firmware, kernel or userspace t
 
 ### ❌ make a script to make changing EFISTUB boot using `efibootmgr` less painful
-
-### ❌ make refind boot menu pretty (PC)
 
 ### ✅ `alsa`, `alsa-utils`, `alsa-packages` for sound management
 
