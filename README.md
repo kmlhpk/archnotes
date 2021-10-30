@@ -4,11 +4,9 @@
 
 Following the [Installation Guide](https://wiki.archlinux.org/index.php/installation_guide).
 
-`ip link`, `wifi-menu`, `iwctl` to get connected to the internet (if no ethernet)
+### First steps
 
-### `iwctl`
-
-Newer versions of the installation guide don't come with wifi-menu, relying on iwctl. Use the following commands in the iwctl prompt:
+Newer versions of the installation guide don't come with `wifi-menu` (RIP), relying instead on `iwctl`. Use the following commands in the iwctl prompt:
 
 ```
 device list
@@ -19,27 +17,27 @@ station DEVICE connect SSID
 
 `loadkeys uk`
 
-`timedatectl set-ntp true`, `timedatectl status` (this seems to fuck up Windows clock, remember to reset it)
+`timedatectl set-ntp true`, `timedatectl status` (this seems to fuck up Windows clock on dual boot systems, remember to reset it)
 
 ### Partitions, Filesystems, Mounting
 
-`lsblk` to sanity check, `-f` option to see filesystems
+`lsblk` to check, `-f` option to see filesystems
 
 `fdisk /dev/sdX` to select a disk
 
 `n` to create a new partition, `p` to print, `d` to delete, `w` to write, `t` to change type
 
-want a `boot` of about 512MiB and the rest can be `root` (set up swpafile later)
+want a `boot` of about 512MiB (`+512MiB` works when prompted for end block) and the rest can be `root` (set up swpafile later)
 
 don't really need to separate `root` and `home`, unless you're very scared of things fucking up
 
-make sure to change the type of the EFI partition from Linux filesystem to EFI (option `1`)
+make sure to change the type of the `boot` partition from Linux filesystem to EFI (`t`, option `1`)
 
 `mkfs.fat -F32 /dev/sdXY` for UEFI part, `mkfs.ext4 /dev/sdXZ` for other part(s)
 
 Mount root partition using `mount /dev/sdXY /mnt` (probably `sda2`, or on laptop `nvme0n1p2`)
 
-Create `/mnt/boot` (and optionally `/mnt/home`) directory (`mkdir /mnt/...`), and mount the EFI (and home) partition, respectively
+Make EFI dir with `mkdir /mnt/boot` (and optionally `mkdir /mnt/home`), and mount the EFI dir with `mount /dev/sdXY /mnt/boot` (Y is prob 1)
 
 Make sure the boot partition/mountpoint/dir is called `boot` not `efi`, since `pacstrap` will chuck your shit in `boot` regardless and it'll just cause you problems with `systemd-boot` down the line
 
@@ -53,7 +51,7 @@ Make sure the boot partition/mountpoint/dir is called `boot` not `efi`, since `p
 
 Install Arch and some basic text and networking utilities with `pacstrap /mnt base linux linux-firmware base-devel nano vi netctl networkmanager`
 
-Run `genfstab -U /mnt >> /mnt/etc/fstab`, check the resulting file
+Run `genfstab -U /mnt >> /mnt/etc/fstab`, check the resulting file (you'll need the UUID of the root part for efibootmgr)
 
 ### Enter the new system
 
@@ -61,7 +59,7 @@ Run `genfstab -U /mnt >> /mnt/etc/fstab`, check the resulting file
 
 Run `ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime`, `timedatectl set-timezone Europe/London` and `hwclock --systohc`
 
-Uncomment relevant locales in `/etc/locale.gen` and run `locale-gen`
+Uncomment relevant locale(s) in `/etc/locale.gen` and run `locale-gen`
 
 `echo "LANG=en_GB.UTF8" >> /etc/locale.conf`
 
@@ -104,7 +102,13 @@ You can then make a windows.conf with the lines `title Windows 10` and `efi /EFI
 
 ### Microcode
 
+#### `bootctl` (thus PC)
+
 Install `amd-ucode` and add to `/boot/loader/entries/arch.conf` the line `initrd /amd-ucode.img` as the first initrd line (ie. before initramfs).
+
+#### `efibootmgr` (thus laptop)
+
+🔜 TODO!
 
 ### Done
 
@@ -127,13 +131,17 @@ visudo /etc/sudoers
 
 Once in `/etc/sudoers`, uncomment the line allowing wheel users to run any command and save (press i, do stuff, press escape, `:wq`, press enter)
 
+### SWAP TO THE NEW USER NOW
+
+Don't do shit as root, there's no need. You'll just double your workload when you realise you've set stuff up for the wrong user.
+
 ### Get rid of weird caching message
 
 https://unix.stackexchange.com/questions/257270/get-rid-of-no-caching-mode-page-found-message-during-boot
 
 ### Networking
 
-`systemctl enable NetworkManager`, `nmtui`
+`systemctl enable NetworkManager`, `systemctl start NetworkManager`, `nmtui`
 
 ### Graphical environment
 
@@ -141,7 +149,9 @@ Ctrl+Alt+F2(3,4...) starts new tty
 
 Alt+Left,Right to move ttys
 
-Download the `xorg` package group, `mesa` and the relevant video drivers
+Download the `xorg` package group and `xorg-xinit`, `mesa`, and the relevant video drivers
+
+For a DE, you can do worse than `plasma`. If you do want to use it, might as well install `firefox konsole yakuake dolphin` and other useful files as well (no need for the whole KDE apps collection, that's fukin bloat)
 
 Clone `dwm` + `st` from git repos, run `make` and `sudo make install`. install `dmenu`.
 
