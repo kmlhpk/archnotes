@@ -6,6 +6,17 @@ Following the [Installation Guide](https://wiki.archlinux.org/index.php/installa
 
 `ip link`, `wifi-menu`, `iwctl` to get connected to the internet (if no ethernet)
 
+### `iwctl`
+
+Newer versions of the installation guide don't come with wifi-menu, relying on iwctl. Use the following commands in the iwctl prompt:
+
+```
+device list
+station DEVICE scan
+station DEVICE get-networks
+station DEVICE connect SSID
+```
+
 `loadkeys uk`
 
 `timedatectl set-ntp true`, `timedatectl status` (this seems to fuck up Windows clock, remember to reset it)
